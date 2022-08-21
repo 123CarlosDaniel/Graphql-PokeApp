@@ -11,6 +11,12 @@ const typeDefinitions = gql`
     name: String
     weight: Int
     sprite: String
+    abilities: [String]
+    hp : Int
+    attack: Int
+    special: Int
+    defense: Int
+    types: [String]
   }
   type Query {
     getPokemons(offset: Int, limit: Int): [PokemonInfo]
@@ -36,11 +42,18 @@ const resolvers = {
       try {
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${searchParam}`)
         const data = await response.json()
+        const abilities = data.abilities.map(el => el.ability.name)
         return {
           name: data.name,
           weight: data.weight,
           id: data.id,
           sprite: data.sprites.other.dream_world.front_default,
+          abilities , 
+          hp : data.stats[0].base_stat,
+          attack : data.stats[1].base_stat,
+          special : data.stats[3].base_stat,
+          defense : data.stats[2].base_stat,
+          types : data.types.map(el => el.type.name)
         }
       } catch (error) {
         console.log(error)
