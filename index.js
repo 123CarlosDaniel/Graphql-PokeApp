@@ -1,5 +1,5 @@
 import { ApolloServer, gql } from 'apollo-server'
-
+import fetch from 'node-fetch'
 const typeDefinitions = gql`
   type PokemonInfo {
     name: String
